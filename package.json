@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "three": "^0.153.0"
+  },
+  "devDependencies": {
+    "vite": "^4.3.9"
+  },
+  "name": "showroom",
+  "version": "1.0.0",
+  "description": "A virtual showroom for online stores",
+  "main": "main.js",
+  "scripts": {
+    "start": "npx vite",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "John Judeh"
+}
