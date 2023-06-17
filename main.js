@@ -50,12 +50,12 @@ function addVanity() {
     const geometry = new THREE.BoxGeometry(2, 0.1, 1);
     const loader = new THREE.TextureLoader();
     const materials = [
-        new THREE.MeshPhysicalMaterial({ map: loader.load("textures/marble_side.jpg") }),
-        new THREE.MeshPhysicalMaterial({ map: loader.load("textures/marble_side.jpg") }),
-        new THREE.MeshPhysicalMaterial({ map: loader.load("textures/marble_top.jpg") }), // top
-        new THREE.MeshPhysicalMaterial({ map: loader.load("textures/marble_top.jpg") }), // bottom
-        new THREE.MeshPhysicalMaterial({ map: loader.load("textures/marble_side.jpg") }),
-        new THREE.MeshPhysicalMaterial({ map: loader.load("textures/marble_side.jpg") }),
+        new THREE.MeshPhongMaterial({ map: loader.load("textures/marble_side.jpg") }),
+        new THREE.MeshPhongMaterial({ map: loader.load("textures/marble_side.jpg") }),
+        new THREE.MeshPhongMaterial({ map: loader.load("textures/marble_top.jpg") }), // top
+        new THREE.MeshPhongMaterial({ map: loader.load("textures/marble_top.jpg") }), // bottom
+        new THREE.MeshPhongMaterial({ map: loader.load("textures/marble_side.jpg") }),
+        new THREE.MeshPhongMaterial({ map: loader.load("textures/marble_side.jpg") }),
     ];
     const vanity = new THREE.Mesh(geometry, materials);
     scene.add(vanity);
