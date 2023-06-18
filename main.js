@@ -5,9 +5,9 @@ import { FontLoader } from 'three/addons/loaders/FontLoader';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { VertexNormalsHelper } from 'three/addons/helpers/VertexNormalsHelper.js';
 
-const canvas = document.getElementById("c");
+const canvas = document.getElementById("renderer");
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(50, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
 const controls = new OrbitControls(camera, canvas);
 
@@ -32,14 +32,14 @@ function setupLights() {
 }
 
 function setupView() {
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
     camera.position.set(0, 2, 4);
     controls.enableDamping = true;
 
     window.addEventListener("resize", () => {
-        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
         camera.updateProjectionMatrix();
-        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
         renderer.render(scene, camera);
     });
 }
@@ -93,8 +93,14 @@ function addGeometryHelpers(mesh) {
 
 function addVanity() {
     const geometry = new THREE.BoxGeometry(2, 0.1, 1);
+    const uv = geometry.getAttribute("uv");
+    console.log(uv);
+    uv.setXY(8, 0, 1);
+    uv.setXY(9, 0.5, 1);
+    uv.setXY(10, 0, 0.5);
+    uv.setXY(11, 0.5, 0.5);
     const loader = new THREE.TextureLoader();
-    const material = new THREE.MeshPhongMaterial({ map: loader.load("textures/marble.jpg") });
+    const material = new THREE.MeshPhongMaterial({ map: loader.load("textures/lion_wall.jpg") });
     const vanity = new THREE.Mesh(geometry, material);
     scene.add(vanity);
     addGeometryHelpers(vanity);

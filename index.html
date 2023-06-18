@@ -4,16 +4,17 @@
 <head>
     <meta charset="utf-8">
     <title>My first three.js app</title>
-    <style>
-        body {
-            margin: 0;
-        }
-    </style>
+    <link rel="stylesheet" href="main.css" />
 </head>
 
 <body>
     <div id="errorMessage"></div>
-    <canvas id="c"></canvas>
+    <div class="container">
+        <canvas id="renderer"></canvas>
+        <section class="textureContainer">
+            <img id="textureSelector" src="textures/marble.jpg" />
+        </section>
+    </div>
     <script type="module" src="/main.js"></script>
 </body>
 
