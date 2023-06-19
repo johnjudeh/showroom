@@ -4,6 +4,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader';
 import { FontLoader } from 'three/addons/loaders/FontLoader';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { VertexNormalsHelper } from 'three/addons/helpers/VertexNormalsHelper.js';
+import { calculateUV } from "/picker.js";
 
 const canvas = document.getElementById("renderer");
 const scene = new THREE.Scene();
@@ -94,13 +95,15 @@ function addGeometryHelpers(mesh) {
 function addVanity() {
     const geometry = new THREE.BoxGeometry(2, 0.1, 1);
     const uv = geometry.getAttribute("uv");
+    const chosenUv = calculateUV();
     console.log(uv);
-    uv.setXY(8, 0, 1);
-    uv.setXY(9, 0.5, 1);
-    uv.setXY(10, 0, 0.5);
-    uv.setXY(11, 0.5, 0.5);
+    uv.setXY(8, chosenUv.topLeft.x, chosenUv.topLeft.y);
+    uv.setXY(9, chosenUv.topRight.x, chosenUv.topRight.y);
+    uv.setXY(10, chosenUv.bottomLeft.x, chosenUv.bottomLeft.y);
+    uv.setXY(11, chosenUv.bottomRight.x, chosenUv.bottomRight.y);
+    console.log(uv);
     const loader = new THREE.TextureLoader();
-    const material = new THREE.MeshPhongMaterial({ map: loader.load("textures/lion_wall.jpg") });
+    const material = new THREE.MeshPhongMaterial({ map: loader.load("textures/marble.jpg") });
     const vanity = new THREE.Mesh(geometry, material);
     scene.add(vanity);
     addGeometryHelpers(vanity);

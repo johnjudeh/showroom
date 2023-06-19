@@ -17,6 +17,7 @@ body {
 }
 
 .textureContainer {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -24,6 +25,17 @@ body {
     border-radius: 20px 20px 0 0;
 }
 
-#textureSelector {
+#texture {
+    width: 100%;
     margin: 35px 35px 35px 35px;
+}
+
+#picker {
+    position: absolute;
+    top: 35px;
+    left: 35px;
+    z-index: 1;
+    height: 200px;
+    width: 400px;
+    border: red 2px solid;
 }
