@@ -38,4 +38,8 @@ body {
     height: 200px;
     width: 400px;
     border: red 2px solid;
+    cursor: grab;
+}
+#picker:active {
+    cursor: grabbing;
 }
