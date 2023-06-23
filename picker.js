@@ -1,3 +1,5 @@
+import { updateVanityUV } from "/main.js";
+
 const picker = document.getElementById("picker");
 const textureImage = document.getElementById("texture");
 
@@ -8,7 +10,7 @@ const getPositionInfo = (element) => {
 
 const inverse = (n) => 1 - n;
 
-export const calculateUV = () => {
+export const calculateUVFromPicker = () => {
     const pickerPosInfo = getPositionInfo(picker);
     const texturePosInfo = getPositionInfo(textureImage);
 
@@ -33,6 +35,8 @@ let pickerStartLeft;
 let pickerStartTop;
 let dragging = false;
 
+window.onload = () => updateVanityUV(calculateUVFromPicker());
+
 picker.onmousedown = (e) => {
     mouseStartPosition.x = e.clientX;
     mouseStartPosition.y = e.clientY;
@@ -51,5 +55,6 @@ window.onmousemove = (e) => {
         // TODO: Make sure the picker is in the boundaries of the image or don't move it
         picker.style.left = `${pickerStartLeft + (e.clientX - mouseStartPosition.x)}px`;
         picker.style.top = `${pickerStartTop + (e.clientY - mouseStartPosition.y)}px`;
+        updateVanityUV(calculateUVFromPicker());
     }
 };
