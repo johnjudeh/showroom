@@ -98,7 +98,7 @@ function addVanity() {
     const vanity = new THREE.Mesh(geometry, material);
     vanity.name = "Vanity";
     scene.add(vanity);
-    addGeometryHelpers(vanity);
+    // addGeometryHelpers(vanity);
 }
 
 export const updateVanityUV = (updatedUV) => {
