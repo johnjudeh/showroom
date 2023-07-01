@@ -7,6 +7,7 @@ import { VertexNormalsHelper } from 'three/addons/helpers/VertexNormalsHelper.js
 
 const canvas = document.getElementById("viewer");
 const scene = new THREE.Scene();
+const dpr = window.devicePixelRatio || 1;
 const camera = new THREE.PerspectiveCamera(50, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
 const controls = new OrbitControls(camera, canvas);
@@ -32,16 +33,20 @@ function setupLights() {
 }
 
 function setCameraPositionForWidth() {
-    if (window.innerWidth >= 1000) {
+    if (window.innerWidth >= 850) {
         camera.position.set(0, 1.5, 2);
     } else if (window.innerWidth >= 580) {
         camera.position.set(0, 2, 3);
     } else {
         camera.position.set(0, 2, 4);
     }
+    if (dpr > 1) {
+        camera.position.set(0, 2, 2.6);
+    }
 }
 
 function setupView() {
+    renderer.setPixelRatio(dpr);
     renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
     setCameraPositionForWidth();
     controls.enableDamping = true;
@@ -103,7 +108,9 @@ function addGeometryHelpers(mesh) {
 function addVanity() {
     const geometry = new THREE.BoxGeometry(2, 0.1, 1);
     const loader = new THREE.TextureLoader();
-    const material = new THREE.MeshPhongMaterial({ map: loader.load("textures/black-marble.jpg") });
+    const texture = loader.load("textures/black-marble.jpg");
+    texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    const material = new THREE.MeshPhongMaterial({ map: texture });
     const vanity = new THREE.Mesh(geometry, material);
     vanity.name = "Vanity";
     scene.add(vanity);

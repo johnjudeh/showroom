@@ -31,9 +31,11 @@ export const calculateUVFromPicker = () => {
 };
 
 const initPicker = () => {
-    const texturePosInfo = getPositionInfo(materialImage);
-    picker.style.top = `${texturePosInfo.y}px`;
-    picker.style.left = `${texturePosInfo.x}px`;
+    const materialPosInfo = getPositionInfo(materialImage);
+    picker.style.width = `${materialImage.width / 1.8}px`;
+    picker.style.height = `${materialImage.height / 1.8}px`;
+    picker.style.top = `${materialPosInfo.y}px`;
+    picker.style.left = `${materialPosInfo.x}px`;
     picker.hidden = false;
 };
 
