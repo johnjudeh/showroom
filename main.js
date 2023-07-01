@@ -144,14 +144,14 @@ export const updateVanityUV = (updatedUV) => {
     // Back Corner
     uv.setXY(21, updatedUV.topLeft.x, updatedUV.topLeft.y);
     uv.setXY(20, updatedUV.topRight.x, updatedUV.topRight.y);
-    uv.setXY(23, updatedUV.topLeft.x, updatedUV.topLeft.y - uvHeight);
-    uv.setXY(22, updatedUV.topRight.x, updatedUV.topRight.y - uvHeight);
+    uv.setXY(23, updatedUV.topLeft.x, updatedUV.topLeft.y + uvHeight);
+    uv.setXY(22, updatedUV.topRight.x, updatedUV.topRight.y + uvHeight);
 
     // Left Corner
     uv.setXY(5, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
     uv.setXY(4, updatedUV.topLeft.x, updatedUV.topLeft.y);
-    uv.setXY(7, updatedUV.bottomLeft.x + uvWidth, updatedUV.bottomLeft.y);
-    uv.setXY(6, updatedUV.topLeft.x + uvWidth, updatedUV.topLeft.y);
+    uv.setXY(7, updatedUV.bottomLeft.x - uvWidth, updatedUV.bottomLeft.y);
+    uv.setXY(6, updatedUV.topLeft.x - uvWidth, updatedUV.topLeft.y);
 
     // Right Corner
     uv.setXY(0, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
