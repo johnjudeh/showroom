@@ -5,15 +5,21 @@
     <meta charset="utf-8">
     <title>Showroom</title>
     <link rel="stylesheet" href="main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Agdasima&family=Lobster&display=swap" rel="stylesheet">
 </head>
 
 <body>
     <div id="errorMessage"></div>
     <div class="container">
-        <canvas id="renderer"></canvas>
-        <section class="textureContainer">
-            <img id="texture" src="textures/marble.jpg" draggable="false" />
-            <div id="picker"></div>
+        <nav class="nav">
+            <span class="logo">Showroom</span>
+        </nav>
+        <canvas id="viewer"></canvas>
+        <section class="material-picker">
+            <img id="material" src="textures/black-marble.jpg" draggable="false" />
+            <div id="picker" hidden></div>
         </section>
     </div>
     <script type="module" src="/picker.js"></script>

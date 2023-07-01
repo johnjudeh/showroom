@@ -1,7 +1,7 @@
 import { updateVanityUV } from "/main.js";
 
 const picker = document.getElementById("picker");
-const textureImage = document.getElementById("texture");
+const textureImage = document.getElementById("material");
 
 const getPositionInfo = (element) => {
     const rect = element.getBoundingClientRect();
@@ -30,14 +30,28 @@ export const calculateUVFromPicker = () => {
     return UV;
 };
 
+const initPicker = () => {
+    const texturePosInfo = getPositionInfo(textureImage);
+    picker.style.top = `${texturePosInfo.y}px`;
+    picker.style.left = `${texturePosInfo.x}px`;
+    picker.hidden = false;
+};
+
+window.onload = () => {
+    initPicker();
+    updateVanityUV(calculateUVFromPicker());
+};
+
+window.onresize = () => {
+    initPicker();
+};
+
 let mouseStartPosition = {};
 let pickerStartLeft;
 let pickerStartTop;
 let dragging = false;
 
-window.onload = () => updateVanityUV(calculateUVFromPicker());
-
-picker.onmousedown = (e) => {
+picker.onpointerdown = (e) => {
     mouseStartPosition.x = e.clientX;
     mouseStartPosition.y = e.clientY;
     const pickerStyle = getComputedStyle(picker);
@@ -46,11 +60,15 @@ picker.onmousedown = (e) => {
     dragging = true;
 };
 
-picker.onmouseup = (e) => {
+picker.onpointerup = (e) => {
     dragging = false;
 };
 
-window.onmousemove = (e) => {
+window.onpointerup = (e) => {
+    dragging = false;
+};
+
+window.onpointermove = (e) => {
     if (dragging) {
         // TODO: Make sure the picker is in the boundaries of the image or don't move it
         picker.style.left = `${pickerStartLeft + (e.clientX - mouseStartPosition.x)}px`;

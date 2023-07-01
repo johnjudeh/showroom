@@ -5,19 +5,19 @@ import { FontLoader } from 'three/addons/loaders/FontLoader';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { VertexNormalsHelper } from 'three/addons/helpers/VertexNormalsHelper.js';
 
-const canvas = document.getElementById("renderer");
+const canvas = document.getElementById("viewer");
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(50, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
 const controls = new OrbitControls(camera, canvas);
 
 function setupBackground() {
-    scene.background = new THREE.Color(0x262626);
+    scene.background = new THREE.Color(0x03012C);
 }
 
 function setupLights() {
     const color = 0xFFFFFF;
-    const intensity = 0.7;
+    const intensity = 0.3;
 
     const ambientLight = new THREE.AmbientLight(0x262626, 1);
     scene.add(ambientLight);
@@ -31,12 +31,23 @@ function setupLights() {
     scene.add(light2);
 }
 
+function setCameraPositionForWidth() {
+    if (window.innerWidth >= 1000) {
+        camera.position.set(0, 1.5, 2);
+    } else if (window.innerWidth >= 580) {
+        camera.position.set(0, 2, 3);
+    } else {
+        camera.position.set(0, 2, 4);
+    }
+}
+
 function setupView() {
     renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
-    camera.position.set(0, 2, 4);
+    setCameraPositionForWidth();
     controls.enableDamping = true;
 
     window.addEventListener("resize", () => {
+        setCameraPositionForWidth();
         camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
@@ -61,9 +72,7 @@ function labelVertices(mesh) {
             height: 0.005,
         });
 
-        const material = new THREE.MeshPhongMaterial({ color: 0x00ffff, side: THREE.DoubleSide });
-
-        scene.add(new THREE.Mesh(createTextGeometry("(0, 0)"), material));
+        const material = new THREE.MeshPhongMaterial({ color: 0xfefefe, side: THREE.DoubleSide });
 
         const positions = mesh.geometry.getAttribute("position");
         const normals = mesh.geometry.getAttribute("normal");
@@ -86,7 +95,7 @@ function labelVertices(mesh) {
 }
 
 function addGeometryHelpers(mesh) {
-    const normalsHelper = new VertexNormalsHelper(mesh, 1, 0xff0000);
+    const normalsHelper = new VertexNormalsHelper(mesh, 1, 0xEA638C);
     scene.add(normalsHelper);
     labelVertices(mesh);
 }
@@ -94,7 +103,7 @@ function addGeometryHelpers(mesh) {
 function addVanity() {
     const geometry = new THREE.BoxGeometry(2, 0.1, 1);
     const loader = new THREE.TextureLoader();
-    const material = new THREE.MeshPhongMaterial({ map: loader.load("textures/marble.jpg") });
+    const material = new THREE.MeshPhongMaterial({ map: loader.load("textures/black-marble.jpg") });
     const vanity = new THREE.Mesh(geometry, material);
     vanity.name = "Vanity";
     scene.add(vanity);
@@ -104,10 +113,45 @@ function addVanity() {
 export const updateVanityUV = (updatedUV) => {
     const vanity = scene.getObjectByName("Vanity");
     const uv = vanity.geometry.getAttribute("uv");
+
+    // Top
     uv.setXY(8, updatedUV.topLeft.x, updatedUV.topLeft.y);
     uv.setXY(9, updatedUV.topRight.x, updatedUV.topRight.y);
     uv.setXY(10, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
     uv.setXY(11, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
+    // Bottom
+    uv.setXY(14, updatedUV.topLeft.x, updatedUV.topLeft.y);
+    uv.setXY(15, updatedUV.topRight.x, updatedUV.topRight.y);
+    uv.setXY(12, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
+    uv.setXY(13, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
+
+    const uvWidth = 0.02;
+    const uvHeight = 0.02;
+
+    // Front Corner
+    uv.setXY(16, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
+    uv.setXY(17, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
+    uv.setXY(18, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y - uvHeight);
+    uv.setXY(19, updatedUV.bottomRight.x, updatedUV.bottomRight.y - uvHeight);
+
+    // Back Corner
+    uv.setXY(21, updatedUV.topLeft.x, updatedUV.topLeft.y);
+    uv.setXY(20, updatedUV.topRight.x, updatedUV.topRight.y);
+    uv.setXY(23, updatedUV.topLeft.x, updatedUV.topLeft.y - uvHeight);
+    uv.setXY(22, updatedUV.topRight.x, updatedUV.topRight.y - uvHeight);
+
+    // Left Corner
+    uv.setXY(5, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
+    uv.setXY(4, updatedUV.topLeft.x, updatedUV.topLeft.y);
+    uv.setXY(7, updatedUV.bottomLeft.x + uvWidth, updatedUV.bottomLeft.y);
+    uv.setXY(6, updatedUV.topLeft.x + uvWidth, updatedUV.topLeft.y);
+
+    // Right Corner
+    uv.setXY(0, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
+    uv.setXY(1, updatedUV.topRight.x, updatedUV.topRight.y);
+    uv.setXY(2, updatedUV.bottomRight.x + uvWidth, updatedUV.bottomRight.y);
+    uv.setXY(3, updatedUV.topRight.x + uvWidth, updatedUV.topRight.y);
+
     uv.needsUpdate = true;
 };
 

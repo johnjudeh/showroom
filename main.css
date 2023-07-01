@@ -1,45 +1,78 @@
+/* Color scheme: https://coolors.co/ea638c-b33c86-190e4f-03012c-8093f1 */
+.color-scheme {
+    color: #03012C;
+    color: #190E4F;
+    color: #8093F1;
+    color: #EA638C;
+    color: #B33C86;
+    color: #B33C86;
+    color: #fefefe;
+}
+
 body {
     margin: 0;
-    background-color: #262626;
+    background-color: #03012c;
+    overflow: hidden;
 }
 
 .container {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    width: 100vw;
 }
 
-#renderer {
+.nav {
+    display: flex;
+    height: 50px;
+    line-height: 50px;
+    background-color: #190E4F;
+    border-bottom: #8093F133 1px solid;
+}
+
+.logo {
     flex-grow: 1;
-    background-color: #262626;
+    color: #fefefe;
+    text-align: center;
+    font-family: 'Agdasima', sans-serif;
+    font-family: 'Lobster', cursive;
+    font-size: 24px;
+}
+
+#viewer {
+    background-color: #03012c;
+    width: 100%;
+    height: calc(60% - 52px);
     max-width: 100vw;
     min-width: 100vw;
 }
 
-.textureContainer {
-    position: relative;
+.material-picker {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #353535;
+    width: 100%;
+    height: 40%;
+    background-color: #190E4F;
+    border-top: #8093F133 1px solid;
     border-radius: 20px 20px 0 0;
 }
 
-#texture {
-    width: 100%;
-    margin: 35px 35px 35px 35px;
+#material {
+    max-height: calc(100% - 70px);
+    max-width: calc(100% - 70px);
+    border: #8093F166 3px solid;
 }
 
 #picker {
     position: absolute;
-    top: 35px;
-    left: 35px;
     z-index: 1;
     height: 200px;
     width: 400px;
-    border: red 2px solid;
+    border: #8093F1 3px solid;
     cursor: grab;
 }
+
 #picker:active {
     cursor: grabbing;
 }
