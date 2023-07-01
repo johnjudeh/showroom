@@ -41,6 +41,7 @@ body {
 
 #viewer {
     background-color: #03012c;
+    flex-grow: 1;
     width: 100%;
     height: calc(60% - 52px);
     max-width: 100vw;
@@ -62,6 +63,7 @@ body {
     max-height: calc(100% - 70px);
     max-width: calc(100% - 70px);
     border: #8093F166 3px solid;
+    user-select: none;
 }
 
 #picker {
