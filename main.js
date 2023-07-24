@@ -5,12 +5,8 @@ import { FontLoader } from 'three/addons/loaders/FontLoader';
 import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 import { VertexNormalsHelper } from 'three/addons/helpers/VertexNormalsHelper.js';
 
-const canvas = document.getElementById("viewer");
 const scene = new THREE.Scene();
 const dpr = window.devicePixelRatio || 1;
-const camera = new THREE.PerspectiveCamera(50, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
-const controls = new OrbitControls(camera, canvas);
 
 function setupBackground() {
     scene.background = new THREE.Color(0x03012C);
@@ -32,7 +28,7 @@ function setupLights() {
     scene.add(light2);
 }
 
-function setCameraPositionForWidth() {
+function setCameraPositionForWidth(camera) {
     if (window.innerWidth >= 850) {
         camera.position.set(0, 1.5, 2);
     } else if (window.innerWidth >= 580) {
@@ -45,14 +41,13 @@ function setCameraPositionForWidth() {
     }
 }
 
-function setupView() {
+function setupView(renderer, camera, canvas) {
     renderer.setPixelRatio(dpr);
     renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
-    setCameraPositionForWidth();
-    controls.enableDamping = true;
+    setCameraPositionForWidth(camera);
 
     window.addEventListener("resize", () => {
-        setCameraPositionForWidth();
+        setCameraPositionForWidth(camera);
         camera.aspect = canvas.offsetWidth / canvas.offsetHeight;
         camera.updateProjectionMatrix();
         renderer.setSize(canvas.offsetWidth, canvas.offsetHeight);
@@ -60,10 +55,10 @@ function setupView() {
     });
 }
 
-function setupScene() {
+function setupScene(renderer, camera, canvas) {
     setupBackground();
     setupLights();
-    setupView();
+    setupView(renderer, camera, canvas);
 }
 
 function labelVertices(mesh) {
@@ -105,7 +100,7 @@ function addGeometryHelpers(mesh) {
     labelVertices(mesh);
 }
 
-function addVanity() {
+function addVanity(renderer) {
     const geometry = new THREE.BoxGeometry(2, 0.1, 1);
     const loader = new THREE.TextureLoader();
     const texture = loader.load("textures/black-marble.jpg");
@@ -119,50 +114,52 @@ function addVanity() {
 
 export const updateVanityUV = (updatedUV) => {
     const vanity = scene.getObjectByName("Vanity");
-    const uv = vanity.geometry.getAttribute("uv");
+    if (vanity) {
+        const uv = vanity.geometry.getAttribute("uv");
 
-    // Top
-    uv.setXY(8, updatedUV.topLeft.x, updatedUV.topLeft.y);
-    uv.setXY(9, updatedUV.topRight.x, updatedUV.topRight.y);
-    uv.setXY(10, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
-    uv.setXY(11, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
-    // Bottom
-    uv.setXY(14, updatedUV.topLeft.x, updatedUV.topLeft.y);
-    uv.setXY(15, updatedUV.topRight.x, updatedUV.topRight.y);
-    uv.setXY(12, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
-    uv.setXY(13, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
+        // Top
+        uv.setXY(8, updatedUV.topLeft.x, updatedUV.topLeft.y);
+        uv.setXY(9, updatedUV.topRight.x, updatedUV.topRight.y);
+        uv.setXY(10, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
+        uv.setXY(11, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
+        // Bottom
+        uv.setXY(14, updatedUV.topLeft.x, updatedUV.topLeft.y);
+        uv.setXY(15, updatedUV.topRight.x, updatedUV.topRight.y);
+        uv.setXY(12, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
+        uv.setXY(13, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
 
-    const uvWidth = 0.02;
-    const uvHeight = 0.02;
+        const uvWidth = 0.02;
+        const uvHeight = 0.02;
 
-    // Front Corner
-    uv.setXY(16, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
-    uv.setXY(17, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
-    uv.setXY(18, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y - uvHeight);
-    uv.setXY(19, updatedUV.bottomRight.x, updatedUV.bottomRight.y - uvHeight);
+        // Front Corner
+        uv.setXY(16, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
+        uv.setXY(17, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
+        uv.setXY(18, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y - uvHeight);
+        uv.setXY(19, updatedUV.bottomRight.x, updatedUV.bottomRight.y - uvHeight);
 
-    // Back Corner
-    uv.setXY(21, updatedUV.topLeft.x, updatedUV.topLeft.y);
-    uv.setXY(20, updatedUV.topRight.x, updatedUV.topRight.y);
-    uv.setXY(23, updatedUV.topLeft.x, updatedUV.topLeft.y + uvHeight);
-    uv.setXY(22, updatedUV.topRight.x, updatedUV.topRight.y + uvHeight);
+        // Back Corner
+        uv.setXY(21, updatedUV.topLeft.x, updatedUV.topLeft.y);
+        uv.setXY(20, updatedUV.topRight.x, updatedUV.topRight.y);
+        uv.setXY(23, updatedUV.topLeft.x, updatedUV.topLeft.y + uvHeight);
+        uv.setXY(22, updatedUV.topRight.x, updatedUV.topRight.y + uvHeight);
 
-    // Left Corner
-    uv.setXY(5, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
-    uv.setXY(4, updatedUV.topLeft.x, updatedUV.topLeft.y);
-    uv.setXY(7, updatedUV.bottomLeft.x - uvWidth, updatedUV.bottomLeft.y);
-    uv.setXY(6, updatedUV.topLeft.x - uvWidth, updatedUV.topLeft.y);
+        // Left Corner
+        uv.setXY(5, updatedUV.bottomLeft.x, updatedUV.bottomLeft.y);
+        uv.setXY(4, updatedUV.topLeft.x, updatedUV.topLeft.y);
+        uv.setXY(7, updatedUV.bottomLeft.x - uvWidth, updatedUV.bottomLeft.y);
+        uv.setXY(6, updatedUV.topLeft.x - uvWidth, updatedUV.topLeft.y);
 
-    // Right Corner
-    uv.setXY(0, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
-    uv.setXY(1, updatedUV.topRight.x, updatedUV.topRight.y);
-    uv.setXY(2, updatedUV.bottomRight.x + uvWidth, updatedUV.bottomRight.y);
-    uv.setXY(3, updatedUV.topRight.x + uvWidth, updatedUV.topRight.y);
+        // Right Corner
+        uv.setXY(0, updatedUV.bottomRight.x, updatedUV.bottomRight.y);
+        uv.setXY(1, updatedUV.topRight.x, updatedUV.topRight.y);
+        uv.setXY(2, updatedUV.bottomRight.x + uvWidth, updatedUV.bottomRight.y);
+        uv.setXY(3, updatedUV.topRight.x + uvWidth, updatedUV.topRight.y);
 
-    uv.needsUpdate = true;
+        uv.needsUpdate = true;
+    }
 };
 
-function addVanityFromGLB() {
+function addVanityFromGLB(camera) {
     const loader = new GLTFLoader();
     loader.load("models/vanity.glb", (gltf) => {
         scene.add(gltf.scene);
@@ -194,18 +191,21 @@ function addBufferGeometryShape() {
     scene.add(mesh);
 }
 
-function render() {
-    requestAnimationFrame(render);
+function render(renderer, camera, controls) {
+    requestAnimationFrame(() => render(renderer, camera, controls));
     controls.update();
     renderer.render(scene, camera);
 }
 
-function main() {
-    setupScene();
-    addVanity();
-    // addVanityFromGLB();
+export function main() {
+    const canvas = document.getElementById("viewer");
+    const camera = new THREE.PerspectiveCamera(50, canvas.offsetWidth / canvas.offsetHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
+    const controls = new OrbitControls(camera, canvas);
+    controls.enableDamping = true;
+    setupScene(renderer, camera, canvas);
+    addVanity(renderer);
+    // addVanityFromGLB(camera);
     // addBufferGeometryShape();
-    render();
+    render(renderer, camera, controls);
 }
-
-main();

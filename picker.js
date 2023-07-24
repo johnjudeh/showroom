@@ -1,4 +1,4 @@
-import { updateVanityUV } from "/main.js";
+import { updateVanityUV, main } from "/main.js";
 
 const picker = document.getElementById("picker");
 const materialImage = document.getElementById("material");
@@ -40,6 +40,7 @@ const initPicker = () => {
 };
 
 window.onload = () => {
+    main();
     initPicker();
     updateVanityUV(calculateUVFromPicker());
 };
