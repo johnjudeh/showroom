@@ -167,7 +167,7 @@ function addVanityFromGLB(camera) {
         if (baseMesh) {
             camera.position.set(2, 3, -4);
             const loader = new THREE.TextureLoader();
-            const texture = loader.load("textures/marble.jpg");
+            const texture = loader.load("textures/black-marble.jpg");
             const material = new THREE.MeshPhongMaterial({ map: texture });
             baseMesh.material = material;
         }
